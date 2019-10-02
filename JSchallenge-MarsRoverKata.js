@@ -10,7 +10,7 @@ const rover = {
 
 // ====================== to turn
 
-function turnLeft(rover){
+function turnLeft(rover) {
     switch (rover.direction) {
         case "N": 
             rover.direction = "W";
@@ -34,7 +34,7 @@ function turnLeft(rover){
 // test turnLeft function : OK
 // turnLeft(rover);
 
-function turnRight(rover){
+function turnRight(rover) {
     switch (rover.direction) {
         case "N": 
             rover.direction = "E";
@@ -59,7 +59,7 @@ function turnRight(rover){
 
 // ====================== to move
 
-function moveForward(rover){
+function moveForward(rover) {
     switch (rover.direction) {
         case "N": 
             rover.y--;
@@ -85,10 +85,10 @@ function moveForward(rover){
 
 /* whereToMove is a parameter which is a string of letters either f,r or l. 
 This parameter has to be converted to an array and each letter will be executed by an associated function(s) */
-function commands (whereToMove){
+function commands (whereToMove) {
     let separateMoves = [];  // method .split() could be use to avoid the 4 lines below ?
     rover.travelLog.push(rover.x, rover.y); // fills in the travelLog with the path (maybe is an other way to display the coordonates ? 2 by 2 to see each moves...set each pair of coordonates in an object ?)
-    for (i = 0; i < whereToMove.length; i++){ // whereToMove.length = 3
+    for (i = 0; i < whereToMove.length; i++) { // whereToMove.length = 3
         let move = whereToMove.charAt(i);
         separateMoves.push(move);
         //console.log(separateMoves); check if the array fills up
