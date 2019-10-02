@@ -106,6 +106,50 @@ function moveForward(rover) {
 //test the moveForward function : OK
 // moveForward(rover);
 
+function moveBackward(rover) {
+    let roverMoved = false;
+
+    switch (rover.direction) {
+        case "N":
+            if (rover.y !== 9) {
+                rover.y++;
+                roverMoved = true;
+            }
+            break;
+        case "E":
+            if (rover.x !== 0) {
+                rover.x--;
+                roverMoved = true;
+            }
+            break;
+        case "S":
+            if (rover.y !== 0) {
+                rover.y--;
+                roverMoved = true;
+            }
+            break;
+        case "W":
+            if (rover.x !== 9) {
+                rover.x++;
+                roverMoved = true;
+            }
+            break;
+        default: console.log("Enter a right direction");
+            break;
+    }
+
+    if (roverMoved) {
+        console.log(`moveBackward was called ! The rover is now at x:${rover.x} and y:${rover.y}`);
+        rover.travelLog.push({ // push in travelLog array, the last coordonates x & y
+            x: rover.x,
+            y: rover.y
+        });
+    }
+    else {
+        console.log('Rover couldn\'t cross the border');
+    }
+}
+
 /* whereToMove is a parameter which is a string of letters either f,r or l.
 This parameter has to be converted to an array and each letter will be executed by an associated function(s) */
 function commands (whereToMove) {
@@ -127,6 +171,9 @@ function commands (whereToMove) {
             case "l":
                 turnLeft(rover);
                 break;
+            case "b":
+                moveBackward(rover);
+                break;
             default: console.log("This is not a right direction");
                 break;
         }
@@ -135,5 +182,5 @@ function commands (whereToMove) {
 }
 
 
-//commands("f"); // test if rover is going off the map
+//commands("frffbbb"); // test if rover is going off the map and backward
 
