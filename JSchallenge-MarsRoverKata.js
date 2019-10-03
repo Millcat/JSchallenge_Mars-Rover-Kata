@@ -5,8 +5,65 @@ const rover = {
     direction : "N",
     x: 0,
     y: 0,
-    travelLog: [] // after each move, (x;y)-1 will be push in the array in an object
+    travelLog: [{
+        x,
+        y
+        }
+    ] // after each move, (x;y)-1 will be push in the array in an object
 };
+
+// ====================== Obstacles // 0 means "OK go and do the move", "1" means "Obstacle! No Go"
+
+const map = [
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 1, 1, 0, 1, 1, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 ],
+    [ 0, 0, 0, 1, 1, 1, 1, 1, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+];
+
+function isInsideMap(x, y) { // variables to fix the limit of the map
+    const outLeft = x < 0;
+    const outRight = x > map[0].length - 1;
+    const outTop = y < 0;
+    const outBottom = y > map.length - 1;
+
+    if (outLeft || outRight || outTop || outBottom) { // if the rover is out the map
+        console.log("Can't go: end of the map !");
+        return false;
+    }
+    return true; // condition to be inside the map
+
+    // if (x >= 0 && x <= map[0].length-1 && y >= 0 && y <= map.length-1) {  //  is in the y columns of the map? ...
+    //     return true;                                   // ...then is inside the map ;)
+    // } else {
+    //     console.log("Can't go: end of the map !");
+    //     return false;
+    // }
+}
+
+function isNoObstacle(x, y) {
+    if (map[y][x] === 0) {                             //if there is no Obstacles...
+        return true;                                   //...then you can go
+    } else {
+        console.log("Can't go: there is an obstacle !");
+        return false;
+    }
+}
+
+function canGo(x,y) { // if isInsideMap = true and ifNoObstacles = true alors canGo = true
+    if (isInsideMap(x,y) && isNoObstacle(x,y)) {
+        return true;
+    }
+    return false;
+}
+
 
 // ====================== to turn
 
@@ -14,7 +71,6 @@ function turnLeft(rover) {
     switch (rover.direction) {
         case "N":
             rover.direction = "W";
-            // Bonus : try to find an other function which write this console.log for turnRight function too...
             break;
         case "W":
             rover.direction = "S";
@@ -60,105 +116,90 @@ function turnRight(rover) {
 // ====================== to move
 
 function moveForward(rover) {
-    let roverMoved = false;
+    let hasMoved = false;
 
     switch (rover.direction) {
         case "N":
-            if (rover.y !== 0) {
+            if (canGo(rover.x, rover.y-1)) {
                 rover.y--;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         case "E":
-            if (rover.x !== 9) {
+            if (canGo(rover.x+1, rover.y)) {
                 rover.x++;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         case "S":
-            if (rover.y !== 9) {
+            if (canGo(rover.x, rover.y+1)) {
                 rover.y++;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         case "W":
-            if (rover.x !== 0) {
+            if (canGo(rover.x-1, rover.y)) {
                 rover.x--;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         default: console.log("Enter a right direction");
             break;
     }
 
-    if (roverMoved) {
-        console.log(`moveForward was called ! The rover is now at x:${rover.x} and y:${rover.y}`);
-        rover.travelLog.push({ // push in travelLog array, the last coordonates x & y
+    if (hasMoved) {
+        console.log(`The rover has moved forward ! It's now at x:${rover.x} and y:${rover.y}`);
+        rover.travelLog.push({ // fills the TravelLog with new coordonates
             x: rover.x,
             y: rover.y
         });
-    }
-    else {
-        console.log('Rover couldn\'t cross the border');
     }
 }
 
-//test the moveForward function : OK
+/*test the moveForward function : "Can't go : end of the map!", "moveForward was called ! The rover is now at x:0 and y:-1"
+...but I don't expect the "moveForward was called" message...*/
+
 // moveForward(rover);
 
 function moveBackward(rover) {
-    let roverMoved = false;
+    let hasMoved = false;
 
     switch (rover.direction) {
         case "N":
-            if (rover.y !== 9) {
+            if (canGo(rover.x, rover.y+1)) {
                 rover.y++;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         case "E":
-            if (rover.x !== 0) {
+            if (canGo(rover.x-1, rover.y)) {
                 rover.x--;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         case "S":
-            if (rover.y !== 0) {
+            if (canGo(rover.x, rover.y-1)) {
                 rover.y--;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         case "W":
-            if (rover.x !== 9) {
+            if (canGo(rover.x+1, rover.y)) {
                 rover.x++;
-                roverMoved = true;
+                hasMoved = true;
             }
             break;
         default: console.log("Enter a right direction");
             break;
     }
-
-    if (roverMoved) {
-        console.log(`moveBackward was called ! The rover is now at x:${rover.x} and y:${rover.y}`);
-        rover.travelLog.push({ // push in travelLog array, the last coordonates x & y
-            x: rover.x,
-            y: rover.y
-        });
-    }
-    else {
-        console.log('Rover couldn\'t cross the border');
-    }
+    console.log(`The rover has moved backward ! It's now at x:${rover.x} and y:${rover.y}`);
 }
 
 /* whereToMove is a parameter which is a string of letters either f,r or l.
 This parameter has to be converted to an array and each letter will be executed by an associated function(s) */
 function commands (whereToMove) {
-    let separateMoves = [];  // method .split() could be use to avoid the 4 lines below ?
-    rover.travelLog.push({ // fills the TravelLog with past coordonates
-        x: rover.x,
-        y: rover.y
-    });
-    for (i = 0; i < whereToMove.length; i++) { // whereToMove.length = 3
+    let separateMoves = [];  // method .split() could be use instead of this and loop
+    for (i = 0; i < whereToMove.length; i++) {
         let move = whereToMove.charAt(i);
         separateMoves.push(move); //console.log(separateMoves); check if the array fills up
         switch (move) {
@@ -178,9 +219,9 @@ function commands (whereToMove) {
                 break;
         }
     }
-    console.log(rover.travelLog);
+    console.log(rover.travelLog); // careful at the scope of the travelLog
 }
 
 
-//commands("frffbbb"); // test if rover is going off the map and backward
+//commands("frff"); //
 
