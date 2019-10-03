@@ -5,11 +5,11 @@ const rover = {
     direction : "N",
     x: 0,
     y: 0,
-    travelLog: [{
-        x,
-        y
+    travelLog: [{ // after each move, the new coordonates will be push as an object in this array
+        x:0,
+        y:0
         }
-    ] // after each move, (x;y)-1 will be push in the array in an object
+    ]
 };
 
 // ====================== Obstacles // 0 means "OK go and do the move", "1" means "Obstacle! No Go"
@@ -156,9 +156,7 @@ function moveForward(rover) {
     }
 }
 
-/*test the moveForward function : "Can't go : end of the map!", "moveForward was called ! The rover is now at x:0 and y:-1"
-...but I don't expect the "moveForward was called" message...*/
-
+// test moveForward function = OK
 // moveForward(rover);
 
 function moveBackward(rover) {
@@ -192,8 +190,17 @@ function moveBackward(rover) {
         default: console.log("Enter a right direction");
             break;
     }
-    console.log(`The rover has moved backward ! It's now at x:${rover.x} and y:${rover.y}`);
+
+    if (hasMoved) {
+        console.log(`The rover has moved backward ! It's now at x:${rover.x} and y:${rover.y}`);
+        rover.travelLog.push({ // fills the TravelLog with new coordonates
+            x: rover.x,
+            y: rover.y
+        });
+    }
 }
+
+// ====================== to command
 
 /* whereToMove is a parameter which is a string of letters either f,r or l.
 This parameter has to be converted to an array and each letter will be executed by an associated function(s) */
@@ -223,5 +230,5 @@ function commands (whereToMove) {
 }
 
 
-//commands("frff"); //
+//commands("frffbf"); //
 
