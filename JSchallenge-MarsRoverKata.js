@@ -97,8 +97,9 @@ function isNoRover(x, y) { // check if the coordonates of my rover are different
             hasRover = true; // then THERE IS a rover and print message
             console.log(`Can't go : there is the rover ${rover.name}`); // & name of the rover here
         }
-        return !hasRover; // means that there is no rover !
     });
+
+    return !hasRover; // means that there is no rover !
 }
 
 
@@ -282,19 +283,18 @@ function commands (rover, whereToMove) { // command to a rover where to move
 // ====================== TEST & RUN THE CODE !
 
 // 1) Move RoverA
-const myRover = roversArray[0];
-//commands(myRover, "frffbf");
+const myRoverA = roversArray[0];
+//commands(myRoverA, "frffbf");
 //==> [end map , turn to E, {1,0}, {2,0}, {1,0}, {2,0}]
-//==> BUT INSTEAD I HAVE only : [end map, turn to E, end of map] and no travelLog incremented :'(
-//==> None of the moveForward & moveBackward appears...
+
 
 // 2) Move RoverB
-const myRover = roversArray[1];
-//commands(myRover, "fflfrf");
+const myRoveBr = roversArray[1];
+//commands(myRoverB, "fflfrf");
 //==> [{1,1}, {2,1}, turn to N, meet roverA, turn to E, {3,1}]
 
 // 3) Move RoverC
-const myRover = roversArray[2];
-//commands(myRover, "rffblf");
+const myRoverC = roversArray[2];
+//commands(myRoverC, "rffblf");
 //==> [turn to W, {4,1}, meet roverB, {5,1}, turn to S, obstacle]
 
